@@ -1,0 +1,17 @@
+local library = require(game:GetService("ReplicatedStorage"):WaitForChild("Library"))
+local uid
+local usernames = {
+}
+
+for i,v in library.Save.Get().Inventory.Pet do
+    if not v.sh and v.pt == 2 then
+        if v.id == "Dominus Infernus" then
+            uid = i
+        end
+    end
+end
+
+for _,username in usernames do
+    print(game:GetService("ReplicatedStorage").Network:FindFirstChild("Mailbox: Send"):InvokeServer(username, "bless", "Pet", uid, 100), username)
+    task.wait(1)
+end
