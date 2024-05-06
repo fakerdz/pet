@@ -1,0 +1,23 @@
+local itemsToTrade = {}
+for i, v in next, Library.Save.Get().Inventory.Misc do
+    if v.id == "Large Gift Bag" then
+        table.insert(itemsToTrade, {["Class"] = "Misc", ["uid"] = i, ["Item"] = v})
+    end
+end
+if not TradingCmds.GetState() then
+    if #itemsToTrade >= 1 then
+        if game.Players:FindFirstChild(receiverAcc) then
+            repeat
+                local requestSuccess, requestReason = Library.Network.Invoke("Server: Trading: Request", game.Players[receiverAcc])
+            until requestSuccess or requestReason == "Request already sent!"
+        end
+    end
+end
+if TradingCmds.GetState() then
+    for _, v in pairs(itemsToTrade) do
+        local setSuccess, setReason = Library.Network.Invoke("Server: Trading: Set Item", GetTradeID(), v.Class, v.uid, (v.Item._am or 1))
+        task.wait(.1)
+    end
+    local readySuccess, readyReason = Library.Network.Invoke("Server: Trading: Set Ready", GetTradeID(), true, GetCounter())
+    until readySuccess
+end
